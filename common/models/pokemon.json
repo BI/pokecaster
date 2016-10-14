@@ -1,7 +1,7 @@
 {
   "name": "pokemon",
   "plural": "pokemon",
-  "base": "Model",
+  "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true

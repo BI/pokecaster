@@ -17,11 +17,11 @@
     "dataSource": "pokecaster",
     "public": true
   },
-  "city": {
+  "sighting": {
     "dataSource": "pokecaster",
     "public": true
   },
-  "sighting": {
+  "city": {
     "dataSource": "pokecaster",
     "public": true
   }
