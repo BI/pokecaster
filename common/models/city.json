@@ -1,0 +1,29 @@
+{
+  "name": "city",
+  "plural": "cities",
+  "base": "Model",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "continent": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "sightings": {
+      "type": "hasMany",
+      "model": "sighting",
+      "foreignKey": "city_id"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

@@ -1,0 +1,7 @@
+{
+  "pokecaster": {
+    "name": "pokecaster",
+    "connector": "sqlite3",
+    "file": "./pokecaster.sqlite"
+  }
+}
