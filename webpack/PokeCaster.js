@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import dc from 'dc'
 import crossfilter from 'crossfilter'
-import { Map, TileLayer } from 'react-leaflet'
+import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
+import MarkerLayer from 'react-leaflet-marker-layer';
 
 const centerPosition = [51.0, -.09]
 
@@ -26,7 +27,7 @@ export default class PokeCaster extends Component {
         "name": "charmander",
         "spotted_on": "2016-08-03 23:14:00",
         "latitude": 40.5788,
-        "longitude": -105.062,
+        "longitude": -67.062,
         "type_1":"fire",
         "type_2":"",
         "weather":"raining",
@@ -37,18 +38,18 @@ export default class PokeCaster extends Component {
         "name": "raichu",
         "spotted_on": "2016-08-03 03:56:00",
         "latitude": 40.5988,
-        "longitude": -105.063,
+        "longitude": -77.063,
         "type_1":"electric",
         "type_2":"",
         "weather":"cloudy",
         "day": "Thursday"
       },
       {
-        "pokedex_id":1,
+        "pokedex_id":130,
         "name": "gyrados",
         "spotted_on": "2016-08-05 13:54:00",
-        "latitude": 40.5888,
-        "longitude": -105.062,
+        "latitude": 41.5888,
+        "longitude": -100.062,
         "type_1":"grass",
         "type_2":"flying",
         "weather":"sunny",
@@ -58,8 +59,8 @@ export default class PokeCaster extends Component {
         "pokedex_id":131,
         "name": "lapras",
         "spotted_on": "2016-08-05 13:54:00",
-        "latitude": 40.5883,
-        "longitude": -105.065,
+        "latitude": 40.5583,
+        "longitude": -99.065,
         "type_1":"water",
         "type_2":"ice",
         "weather":"cloudy",
@@ -109,6 +110,12 @@ export default class PokeCaster extends Component {
           style={{height: "500px", width: "500px"}}
           center={centerPosition}
           zoom={1}>
+          <MarkerLayer
+            markers={this.data}
+            longitudeExtractor={m => m.longitude}
+            latitudeExtractor={m => m.latitude}
+            markerComponent={ExampleMarkerComponent}
+          />
           <TileLayer
             url="https://api.mapbox.com/styles/v1/adetwiler/ciua6jnlx001n2ipllot5n0k6/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWRldHdpbGVyIiwiYSI6ImNpc2tnODV6ZjA0bzIyb29jN3hiMzc2bncifQ.-YhC_4Dhk4PAcFpi-z9odw"
             attribution="<attribution>" />
@@ -116,4 +123,24 @@ export default class PokeCaster extends Component {
       </div>
     )
   }
+}
+
+class ExampleMarkerComponent extends React.Component {
+
+  render() {
+    const style = {
+      border: 'solid 1px lightblue',
+      backgroundColor: 'red',
+      borderRadius: '50%',
+      marginTop: '-12px',
+      marginLeft: '-12px',
+      width: '14px',
+      height: '14px'
+    };
+
+    return (
+      <div style={Object.assign({}, this.props.style, style)}></div>
+    );
+  }
+
 }
