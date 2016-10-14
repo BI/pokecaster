@@ -1,0 +1,82 @@
+{
+  "name": "sighting",
+  "plural": "sightings",
+  "base": "Model",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "pokemon_id": {
+      "type": "number",
+      "required": true
+    },
+    "city_id": {
+      "type": "number",
+      "required": true
+    },
+    "latitude": {
+      "type": "number",
+      "required": true
+    },
+    "longitude": {
+      "type": "number",
+      "required": true
+    },
+    "local_time": {
+      "type": "date",
+      "required": true
+    },
+    "time_of_day": {
+      "type": "string",
+      "required": false,
+      "sqlite3": {
+        "dbDefault": "now"
+      }
+    },
+    "is_near_water": {
+      "type": "boolean",
+      "required": true
+    },
+    "weather": {
+      "type": "string",
+      "required": true
+    },
+    "temperature": {
+      "type": "number"
+    },
+    "weather_icon": {
+      "type": "string"
+    },
+    "population_density": {
+      "type": "number"
+    },
+    "urban_type": {
+      "type": "string",
+      "required": true
+    },
+    "gym_distance": {
+      "type": "number",
+      "required": true
+    },
+    "pokestop_distance": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "city": {
+      "type": "belongsTo",
+      "model": "city",
+      "foreignKey": "city_id"
+    },
+    "pokemon": {
+      "type": "belongsTo",
+      "model": "pokemon",
+      "foreignKey": "pokemon_id"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

@@ -1,0 +1,36 @@
+{
+  "name": "pokemon",
+  "plural": "pokemon",
+  "base": "Model",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "id": {
+      "type": "number",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "type_1": {
+      "type": "string",
+      "required": true
+    },
+    "type_2": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "sightings": {
+      "type": "hasMany",
+      "model": "sighting",
+      "foreignKey": "pokemon_id"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
