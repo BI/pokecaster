@@ -24,7 +24,8 @@
   "homepage": "https://github.com/BI/pokecaster#readme",
   "dependencies": {
     "react": "^15.3.2",
-    "react-dom": "^15.3.2"
+    "react-dom": "^15.3.2",
+    "superagent": "^2.3.0"
   },
   "devDependencies": {
     "babel-core": "^6.17.0",
