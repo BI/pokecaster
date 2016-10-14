@@ -1,0 +1,39 @@
+{
+  "name": "pokecaster",
+  "version": "1.0.0",
+  "description": "See trends to forecast Pokemon sightings",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack-dev-server --inline --hot --config webpack.config.js --content-base demo-build/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BI/pokecaster.git"
+  },
+  "keywords": [
+    "pokemon",
+    "trends",
+    "forecast"
+  ],
+  "author": "BI Hackday",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BI/pokecaster/issues"
+  },
+  "homepage": "https://github.com/BI/pokecaster#readme",
+  "dependencies": {
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.17.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.16.0",
+    "babel-preset-react": "^6.16.0",
+    "node-sass": "^3.10.1",
+    "sass-loader": "^4.0.2",
+    "webpack": "^1.13.2",
+    "webpack-dev-server": "^1.16.2"
+  }
+}
