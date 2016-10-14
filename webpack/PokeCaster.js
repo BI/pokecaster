@@ -78,9 +78,19 @@ export default class PokeCaster extends Component {
       .height(150)
       .dimension(dayDimension)
       .group(dayCount)
-    
+    //second chart (maybe)
+
+    let type1Dimension = this.crossfilter.dimension(dc.pluck('type_1'))
+    let type1Count = type1Dimension.group().reduceCount()
+
+    this.type1Chart = dc.pieChart("#type-1-chart")
+      .width(150)
+      .height(150)
+      .dimension(type1Dimension)
+      .group(type1Count)
     dc.renderAll()
   }
+
 
   componentDidUpdate() {
 
@@ -94,6 +104,7 @@ export default class PokeCaster extends Component {
     return (
       <div className="poke-caster">
         <div id="day-chart"></div>
+        <div id="type-1-chart"></div>
         <Map
           style={{height: "500px", width: "500px"}}
           center={centerPosition}
