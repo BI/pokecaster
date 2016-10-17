@@ -2,6 +2,7 @@ import Request from 'superagent'
 
 export default class DCJS_Integration_Layer {
   static get(path, callback) {
+    // dummy data
     let data = [
       {
         "pokedex_id":1,
@@ -60,6 +61,7 @@ export default class DCJS_Integration_Layer {
       }
     ]
 
+    // call the callback when the request is finished
     callback(data)
   }
 }
