@@ -11,7 +11,7 @@ export default class PokeCaster extends Component {
   constructor(props) {
     super(props)
 
-    this.state = { crossfilter: [], pokemonSelected: 'All' }
+    this.state = { crossfilter: [], pokemonSelected: { id: -1 } }
 
     this.initialize = this.initialize.bind(this)
     this.reInitialize = this.reInitialize.bind(this)
@@ -64,7 +64,7 @@ export default class PokeCaster extends Component {
       cfx.dimension.pokemon.filterAll()
     }
     else {
-      cfx.dimension.pokemon.filter(this.state.pokemonSelected)
+      cfx.dimension.pokemon.filter(this.state.pokemonSelected.id)
     }
       
     this.pokemonChart.dimension(cfx.dimension.pokemon).group(cfx.group.pokemon)
@@ -72,13 +72,13 @@ export default class PokeCaster extends Component {
   }
 
   changePokemon(value) {
-    this.setState({ pokemonSelected: value.value })
+    this.setState({ pokemonSelected: value })
   }
 
   render() {
     return (
       <div className="poke-caster">
-        <PokemonSelect onChange={this.changePokemon} value={this.state.pokemonSelected} />
+        <PokemonSelect onChange={this.changePokemon} value={this.state.pokemonSelected.id} />
         <div id="pokemon-chart"></div>
         <div id="day-chart"></div>
         <Map

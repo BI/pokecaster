@@ -5,7 +5,7 @@ export default class DCJS_Integration_Layer {
     // dummy data
     let data = [
       {
-        "pokedex_id":1,
+        "id":1,
         "name": "bulbasaur",
         "spotted_on": "2016-08-01 13:54:00",
         "latitude": 40.5888,
@@ -13,10 +13,11 @@ export default class DCJS_Integration_Layer {
         "type_1":"grass",
         "type_2":"poison",
         "weather":"cloudy",
-        "day": "Tuesday"
+        "day": "Tuesday",
+        "local_time":"2016-09-08T05:02:45.000Z"
       },
       {
-        "pokedex_id":4,
+        "id":4,
         "name": "charmander",
         "spotted_on": "2016-08-03 23:14:00",
         "latitude": 40.5788,
@@ -24,10 +25,11 @@ export default class DCJS_Integration_Layer {
         "type_1":"fire",
         "type_2":"",
         "weather":"raining",
-        "day": "Thursday"
+        "day": "Thursday",
+        "local_time": "2016-09-07T06:19:51.000Z"
       },
       {
-        "pokedex_id":26,
+        "id":26,
         "name": "raichu",
         "spotted_on": "2016-08-03 03:56:00",
         "latitude": 40.5988,
@@ -35,10 +37,11 @@ export default class DCJS_Integration_Layer {
         "type_1":"electric",
         "type_2":"",
         "weather":"cloudy",
-        "day": "Thursday"
+        "day": "Thursday",
+        "local_time": "2016-09-04T06:19:51.000Z"
       },
       {
-        "pokedex_id":1,
+        "id":1,
         "name": "gyrados",
         "spotted_on": "2016-08-05 13:54:00",
         "latitude": 40.5888,
@@ -46,10 +49,11 @@ export default class DCJS_Integration_Layer {
         "type_1":"grass",
         "type_2":"flying",
         "weather":"sunny",
-        "day": "Saturday"
+        "day": "Saturday",
+        "local_time": "2016-09-07T06:19:51.000Z"
       },
       {
-        "pokedex_id":131,
+        "id":131,
         "name": "lapras",
         "spotted_on": "2016-08-05 13:54:00",
         "latitude": 40.5883,
@@ -57,7 +61,8 @@ export default class DCJS_Integration_Layer {
         "type_1":"water",
         "type_2":"ice",
         "weather":"cloudy",
-        "day": "Saturday"
+        "day": "Saturday",
+        "local_time": "2016-09-02T06:19:51.000Z"
       }
     ]
 

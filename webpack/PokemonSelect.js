@@ -14,8 +14,8 @@ export default class PokemonSelect extends Component {
   }
 
   render() {
-    let options = Pokemon.map( p => Object.assign(p, { value: p.identifier, label: p.identifier }))
-    options.unshift({ value: 'All', label: 'All' })
+    let options = Pokemon.map( p => Object.assign(p, { value: p.id, label: p.identifier }))
+    options.unshift({ value: -1, label: 'All' })
     return (
       <Select 
         name="poke-select"
