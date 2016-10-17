@@ -6,6 +6,7 @@ module.exports = {
     path: path.join(__dirname, "demo-build"),
     filename: "bundle.js"
   },
+  devtool: 'source-map',
   module: {
     loaders: [
       {
@@ -16,10 +17,9 @@ module.exports = {
           presets: ['react', 'es2015']
         }
       },
-      {
-        test: /\.scss$/,
-        loaders: ["style", "css", "sass"]
-      }
+      { test: /\.scss$/, loader: "style!css!sass" },
+      { test: /\.css$/, loader: "style!css" },
+      { test: /\.json$/, loader: 'json'}
     ]
   }
 };

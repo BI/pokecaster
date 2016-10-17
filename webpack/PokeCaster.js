@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import dc from 'dc'
-import crossfilter from 'crossfilter'
+import Schema from './util/Schema'
+import DIL from './util/DCJS_Integration_Layer'
 import { Map, TileLayer } from 'react-leaflet'
+import PokemonSelect from './PokemonSelect'
 
 const centerPosition = [51.0, -.09]
 
@@ -9,90 +11,75 @@ export default class PokeCaster extends Component {
   constructor(props) {
     super(props)
 
-    this.data = [
-      {
-        "pokedex_id":1,
-        "name": "bulbasaur",
-        "spotted_on": "2016-08-01 13:54:00",
-        "latitude": 40.5888,
-        "longitude": -105.062,
-        "type_1":"grass",
-        "type_2":"poison",
-        "weather":"cloudy",
-        "day": "Tuesday"
-      },
-      {
-        "pokedex_id":4,
-        "name": "charmander",
-        "spotted_on": "2016-08-03 23:14:00",
-        "latitude": 40.5788,
-        "longitude": -105.062,
-        "type_1":"fire",
-        "type_2":"",
-        "weather":"raining",
-        "day": "Thursday"
-      },
-      {
-        "pokedex_id":26,
-        "name": "raichu",
-        "spotted_on": "2016-08-03 03:56:00",
-        "latitude": 40.5988,
-        "longitude": -105.063,
-        "type_1":"electric",
-        "type_2":"",
-        "weather":"cloudy",
-        "day": "Thursday"
-      },
-      {
-        "pokedex_id":1,
-        "name": "gyrados",
-        "spotted_on": "2016-08-05 13:54:00",
-        "latitude": 40.5888,
-        "longitude": -105.062,
-        "type_1":"grass",
-        "type_2":"flying",
-        "weather":"sunny",
-        "day": "Saturday"
-      },
-      {
-        "pokedex_id":131,
-        "name": "lapras",
-        "spotted_on": "2016-08-05 13:54:00",
-        "latitude": 40.5883,
-        "longitude": -105.065,
-        "type_1":"water",
-        "type_2":"ice",
-        "weather":"cloudy",
-        "day": "Saturday"
-      }
-    ]
-    this.crossfilter = crossfilter(this.data)
+    this.state = { crossfilter: [], pokemonSelected: 'All' }
+
+    this.initialize = this.initialize.bind(this)
+    this.reInitialize = this.reInitialize.bind(this)
+    this.changePokemon = this.changePokemon.bind(this)
   }
 
   componentDidMount() {
-    let dayDimension = this.crossfilter.dimension(dc.pluck('day'))
-    let dayCount = dayDimension.group().reduceCount()
-
-    this.dayChart = dc.pieChart("#day-chart")
-      .width(150)
-      .height(150)
-      .dimension(dayDimension)
-      .group(dayCount)
-    
+    // make an API request with the currently selected pokemon
+    DIL.get('dummy/path.json', this.initialize)
     dc.renderAll()
   }
 
   componentDidUpdate() {
+    // make an API request with the currently selected pokemon
+    DIL.get('dummy/path.json', this.reInitialize)
+    dc.renderAll()
+  }
+
+  initialize(data) {
+    let cfx = Schema.connect(data)
+
+    this.dayChart = dc.pieChart("#day-chart")
+      .width(150)
+      .height(150)
+      .dimension(cfx.dimension.day)
+      .group(cfx.group.day)
+
+    cfx.dimension.pokemon.filterAll()
+    this.pokemonChart = dc.barChart('#pokemon-chart')
+      .width(500)
+      .height(300)
+      .x(d3.scale.ordinal())
+      .xUnits(dc.units.ordinal)
+      .brushOn(false)
+      .xAxisLabel('Pokemon')
+      .yAxisLabel('Known Sightings')
+      .barPadding(0.1)
+      .outerPadding(0.05)
+      .dimension(cfx.dimension.pokemon)
+      .group(cfx.group.pokemon)
 
   }
 
-  wireUpData() {
+  reInitialize(data) {
+    let cfx = Schema.connect(data)
 
+    this.dayChart.dimension(cfx.dimension.day).group(cfx.group.day)
+
+    if(this.state.pokemonSelected == "All") {
+      cfx.dimension.pokemon.filterAll()
+    }
+    else {
+      cfx.dimension.pokemon.filter(this.state.pokemonSelected)
+    }
+      
+    this.pokemonChart.dimension(cfx.dimension.pokemon).group(cfx.group.pokemon)
+    
+  }
+
+  changePokemon(value) {
+    this.setState({ pokemonSelected: value.value })
   }
 
   render() {
     return (
       <div className="poke-caster">
+        <PokemonSelect onChange={this.changePokemon} value={this.state.pokemonSelected} />
+        <div id="pokemon-chart"></div>
         <div id="day-chart"></div>
         <Map
           style={{height: "500px", width: "500px"}}
