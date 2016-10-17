@@ -40,7 +40,11 @@
       ]
     }
   },
-  "files": {},
+  "files": {
+    "loopback#static": {
+      "params": "$!../demo-build"
+    }
+  },
   "final": {
     "loopback#urlNotFound": {}
   },
