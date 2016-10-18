@@ -11,10 +11,10 @@ module.exports = function(City) {
   City.disableRemoteMethod("updateAttributes", false);       // Removes (PUT) /cities/:id
   City.disableRemoteMethod('createChangeStream', true);    // removes (GET|POST) /cities/change-stream
 
-  City.disableRemoteMethod('__create__sightings', false)
-  City.disableRemoteMethod('__upsert__sightings', false)
-  City.disableRemoteMethod('__delete__sightings', false)
-  City.disableRemoteMethod('__updateById__sightings', false)
-  City.disableRemoteMethod('__destroyById__sightings', false)
+  City.disableRemoteMethod('__create__sightings', false);
+  City.disableRemoteMethod('__upsert__sightings', false);
+  City.disableRemoteMethod('__delete__sightings', false);
+  City.disableRemoteMethod('__updateById__sightings', false);
+  City.disableRemoteMethod('__destroyById__sightings', false);
   // City.disableRemoteMethod('__create__sightings', true)
 };
