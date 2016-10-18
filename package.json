@@ -2,7 +2,9 @@
   "name": "pokecaster",
   "version": "1.0.0",
   "main": "server/server.js",
+  "description": "See trends to forecast Pokemon sightings",
   "scripts": {
+    "dev": "webpack-dev-server --inline --hot --config webpack.config.js --content-base demo-build/",
     "lint": "eslint .",
     "start": "node ./server/server.js",
     "posttest": "npm run lint && nsp check"
@@ -10,25 +12,44 @@
   "dependencies": {
     "compression": "^1.0.3",
     "cors": "^2.5.2",
+    "crossfilter": "^1.3.12",
+    "css-loader": "^0.25.0",
+    "dc": "^2.0.0-beta.32",
     "helmet": "^1.3.0",
+    "json-loader": "^0.5.4",
+    "leaflet": "^1.0.1",
     "loopback": "^2.22.0",
     "loopback-boot": "^2.6.5",
     "loopback-component-explorer": "^2.4.0",
     "loopback-connector-sqlite3": "^1.2.0",
     "loopback-datasource-juggler": "^2.39.0",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "react-leaflet": "^0.12.3",
+    "react-select": "^1.0.0-rc.2",
     "serve-favicon": "^2.0.1",
     "sqlite": "^2.2.0",
-    "strong-error-handler": "^1.0.1"
+    "strong-error-handler": "^1.0.1",
+    "style-loader": "^0.13.1",
+    "superagent": "^2.3.0"
   },
   "devDependencies": {
+    "babel-core": "^6.17.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.16.0",
+    "babel-preset-react": "^6.16.0",
+    "node-sass": "^3.10.1",
+    "sass-loader": "^4.0.2",
+    "webpack": "^1.13.2",
+    "webpack-dev-server": "^1.16.2",
     "eslint": "^2.13.1",
     "eslint-config-loopback": "^4.0.0",
     "nsp": "^2.1.0"
   },
   "repository": {
-    "type": "",
-    "url": ""
+    "type": "git",
+    "url": "git+https://github.com/BI/pokecaster.git"
   },
   "license": "UNLICENSED",
-  "description": "pokecaster"
+  "homepage": "https://github.com/BI/pokecaster#readme"
 }

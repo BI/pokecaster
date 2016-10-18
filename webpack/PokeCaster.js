@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import dc from 'dc'
-import crossfilter from 'crossfilter'
+import Schema from './util/Schema'
+import DIL from './util/DCJS_Integration_Layer'
 import { Map, TileLayer } from 'react-leaflet'
+import PokemonSelect from './PokemonSelect'
 
 const centerPosition = [51.0, -.09]
 
@@ -9,91 +11,82 @@ export default class PokeCaster extends Component {
   constructor(props) {
     super(props)
 
-    this.data = [
-      {
-        "pokedex_id":1,
-        "name": "bulbasaur",
-        "spotted_on": "2016-08-01 13:54:00",
-        "latitude": 40.5888,
-        "longitude": -105.062,
-        "type_1":"grass",
-        "type_2":"poison",
-        "weather":"cloudy",
-        "day": "Tuesday"
-      },
-      {
-        "pokedex_id":4,
-        "name": "charmander",
-        "spotted_on": "2016-08-03 23:14:00",
-        "latitude": 40.5788,
-        "longitude": -105.062,
-        "type_1":"fire",
-        "type_2":"",
-        "weather":"raining",
-        "day": "Thursday"
-      },
-      {
-        "pokedex_id":26,
-        "name": "raichu",
-        "spotted_on": "2016-08-03 03:56:00",
-        "latitude": 40.5988,
-        "longitude": -105.063,
-        "type_1":"electric",
-        "type_2":"",
-        "weather":"cloudy",
-        "day": "Thursday"
-      },
-      {
-        "pokedex_id":1,
-        "name": "gyrados",
-        "spotted_on": "2016-08-05 13:54:00",
-        "latitude": 40.5888,
-        "longitude": -105.062,
-        "type_1":"grass",
-        "type_2":"flying",
-        "weather":"sunny",
-        "day": "Saturday"
-      },
-      {
-        "pokedex_id":131,
-        "name": "lapras",
-        "spotted_on": "2016-08-05 13:54:00",
-        "latitude": 40.5883,
-        "longitude": -105.065,
-        "type_1":"water",
-        "type_2":"ice",
-        "weather":"cloudy",
-        "day": "Saturday"
-      }
-    ]
-    this.crossfilter = crossfilter(this.data)
+    this.state = { crossfilter: [], pokemonSelected: { id: 1 } } // Initial pokemon selected is Bulbasaur for now
+
+    this.initialize = this.initialize.bind(this)
+    this.reInitialize = this.reInitialize.bind(this)
+    this.changePokemon = this.changePokemon.bind(this)
   }
 
   componentDidMount() {
-    let dayDimension = this.crossfilter.dimension(dc.pluck('day'))
-    let dayCount = dayDimension.group().reduceCount()
+    // make an API request with the currently selected pokemon
+    DIL.get(`http://localhost:3000/api/pokemon/${this.state.pokemonSelected.id}/sightings` , this.initialize)
+    
+  }
+
+  componentDidUpdate() {
+    // make an API request with the currently selected pokemon
+    DIL.get(`http://localhost:3000/api/pokemon/${this.state.pokemonSelected.id}/sightings`, this.reInitialize)
+    
+  }
+
+  initialize(data) {
+    let cfx = Schema.connect(data)
 
     this.dayChart = dc.pieChart("#day-chart")
       .width(150)
       .height(150)
-      .dimension(dayDimension)
-      .group(dayCount)
-    
+      .dimension(cfx.dimension.day)
+      .group(cfx.group.day)
+
+    this.dataTable = dc.dataTable("#poke-table")
+      .size(20)
+      .columns([
+        (d) => d.pokemon_id,
+        (d) => d.city_id,
+        (d) => d.latitude,
+        (d) => d.longitude,
+        (d) => d.local_time,
+        (d) => d.weather,
+        (d) => d.is_near_water
+      ])
+      .dimension(cfx.dimension.table)
+      .group(cfx.group.table)
+
     dc.renderAll()
   }
 
-  componentDidUpdate() {
+  reInitialize(data) {
+    let cfx = Schema.connect(data)
 
+    this.dayChart.dimension(cfx.dimension.day).group(cfx.group.day)
+    this.dataTable.dimension(cfx.dimension.table).group(cfx.group.table)
+
+    dc.renderAll() 
   }
 
-  wireUpData() {
-
+  changePokemon(value) {
+    this.setState({ pokemonSelected: value })
   }
 
   render() {
     return (
       <div className="poke-caster">
+        <PokemonSelect onChange={this.changePokemon} value={this.state.pokemonSelected.id} />
         <div id="day-chart"></div>
+        <table id="poke-table">
+          <thead>
+            <tr>
+              <th>Pokemon Id</th>
+              <th>City Id</th>
+              <th>Latitude</th>
+              <th>Longitude</th>
+              <th>Local Time</th>
+              <th>Weather</th>
+              <th>Near Water</th>
+            </tr>
+          </thead>
+        </table>
         <Map
           style={{height: "500px", width: "500px"}}
           center={centerPosition}
