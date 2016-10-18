@@ -8,11 +8,13 @@ export default class Schema {
     let cfx = crossfilter(data)
     let dimensions = {
       day: cfx.dimension( d => weekday[(new Date(d.local_time)).getDay()] ),
-      pokemon: cfx.dimension(dc.pluck('id'))
+      pokemon: cfx.dimension(dc.pluck('pokemon_id')),
+      table: cfx.dimension(dc.pluck('id'))
     }
     let groups = {
       day: dimensions.day.group().reduceCount(),
-      pokemon: dimensions.pokemon.group().reduceCount()
+      pokemon: dimensions.pokemon.group().reduceCount(),
+      table: (d) => "Data Table group here for some reason"
     }
 
     return { dimension: dimensions, group: groups }

@@ -11,7 +11,7 @@ export default class PokeCaster extends Component {
   constructor(props) {
     super(props)
 
-    this.state = { crossfilter: [], pokemonSelected: { id: -1 } }
+    this.state = { crossfilter: [], pokemonSelected: { id: 1 } } // Initial pokemon selected is Bulbasaur for now
 
     this.initialize = this.initialize.bind(this)
     this.reInitialize = this.reInitialize.bind(this)
@@ -20,14 +20,14 @@ export default class PokeCaster extends Component {
 
   componentDidMount() {
     // make an API request with the currently selected pokemon
-    DIL.get('dummy/path.json', this.initialize)
-    dc.renderAll()
+    DIL.get(`http://localhost:3000/api/pokemon/${this.state.pokemonSelected.id}/sightings` , this.initialize)
+    
   }
 
   componentDidUpdate() {
     // make an API request with the currently selected pokemon
-    DIL.get('dummy/path.json', this.reInitialize)
-    dc.renderAll()
+    DIL.get(`http://localhost:3000/api/pokemon/${this.state.pokemonSelected.id}/sightings`, this.reInitialize)
+    
   }
 
   initialize(data) {
@@ -39,36 +39,30 @@ export default class PokeCaster extends Component {
       .dimension(cfx.dimension.day)
       .group(cfx.group.day)
 
-    cfx.dimension.pokemon.filterAll()
-    this.pokemonChart = dc.barChart('#pokemon-chart')
-      .width(500)
-      .height(300)
-      .x(d3.scale.ordinal())
-      .xUnits(dc.units.ordinal)
-      .brushOn(false)
-      .xAxisLabel('Pokemon')
-      .yAxisLabel('Known Sightings')
-      .barPadding(0.1)
-      .outerPadding(0.05)
-      .dimension(cfx.dimension.pokemon)
-      .group(cfx.group.pokemon)
+    this.dataTable = dc.dataTable("#poke-table")
+      .size(20)
+      .columns([
+        (d) => d.pokemon_id,
+        (d) => d.city_id,
+        (d) => d.latitude,
+        (d) => d.longitude,
+        (d) => d.local_time,
+        (d) => d.weather,
+        (d) => d.is_near_water
+      ])
+      .dimension(cfx.dimension.table)
+      .group(cfx.group.table)
 
+    dc.renderAll()
   }
 
   reInitialize(data) {
     let cfx = Schema.connect(data)
 
     this.dayChart.dimension(cfx.dimension.day).group(cfx.group.day)
+    this.dataTable.dimension(cfx.dimension.table).group(cfx.group.table)
 
-    if(this.state.pokemonSelected == "All") {
-      cfx.dimension.pokemon.filterAll()
-    }
-    else {
-      cfx.dimension.pokemon.filter(this.state.pokemonSelected.id)
-    }
-      
-    this.pokemonChart.dimension(cfx.dimension.pokemon).group(cfx.group.pokemon)
-    
+    dc.renderAll() 
   }
 
   changePokemon(value) {
@@ -79,8 +73,20 @@ export default class PokeCaster extends Component {
     return (
       <div className="poke-caster">
         <PokemonSelect onChange={this.changePokemon} value={this.state.pokemonSelected.id} />
-        <div id="pokemon-chart"></div>
         <div id="day-chart"></div>
+        <table id="poke-table">
+          <thead>
+            <tr>
+              <th>Pokemon Id</th>
+              <th>City Id</th>
+              <th>Latitude</th>
+              <th>Longitude</th>
+              <th>Local Time</th>
+              <th>Weather</th>
+              <th>Near Water</th>
+            </tr>
+          </thead>
+        </table>
         <Map
           style={{height: "500px", width: "500px"}}
           center={centerPosition}
